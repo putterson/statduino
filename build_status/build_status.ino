@@ -93,18 +93,39 @@ void failure_anim() {
   CircuitPlayground.strip.show();
 }
 
+byte handle_command(byte c) {
+  if(c == 'F'){
+    F_light_animate = failure_anim;
+  } else if (c == 'B') {
+    F_light_animate = building_anim;
+  } else if (c == 'S') {
+    F_light_animate = null_animate;
+    build_success();
+  } else if (c == 'A') {
+    alarm(5);
+  }
+  return c;
+}
+
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(115200);
   CircuitPlayground.begin();
   build_success();
-  F_light_animate = building_anim;
+  F_light_animate = failure_anim;
 }
 
 void loop() {
+  byte incomingByte = 0;
   F_light_animate();
   lightphase += ANIM_SPEED;
   if (lightphase > 1.0) {
     lightphase = lightphase - 1.0;
+  }
+
+  if (Serial.available() > 0) {
+    incomingByte = Serial.read();
+    byte response = handle_command(incomingByte);
+    Serial.write(response);
   }
 }
