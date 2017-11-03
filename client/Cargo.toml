@@ -1,0 +1,11 @@
+[package]
+name = "statduino_client"
+version = "0.1.0"
+authors = ["Pat Goebel <putterson@gmail.com>"]
+
+[dependencies]
+libusb = "0.3.0"
+owning_ref = "0.3"
+toml = "0.4"
+serde = "*"
+serde_derive = "*"
